@@ -1,0 +1,9 @@
+$primary-color: lightgray;
+$secondary-color: #654321;
+$background-color: #121212;
+$background-surface-color: #212121;
+
+body {
+  background-color: $background-color;
+  color: $primary-color;
+}

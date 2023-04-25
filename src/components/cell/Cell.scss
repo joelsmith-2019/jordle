@@ -1,0 +1,14 @@
+@use '../../App.scss';
+
+.cell {
+    aspect-ratio: 1/1;
+    width: 50px;
+    margin: 3px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: App.$background-surface-color;
+    border-radius: 2px;
+}
