@@ -4,7 +4,7 @@ import ControlPanel from './components/controlpanel/ControlPanel';
 
 function App() {
   return (
-    <div className="container">
+    <div className="app-body">
 
       <div className="text-center my-3">
         <h1>Welcome to Jordle!</h1>

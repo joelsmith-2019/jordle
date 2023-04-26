@@ -1,6 +1,7 @@
 @use '../../App.scss';
 
-.cell {
+// Default game cell styles
+.game-cell {
     aspect-ratio: 1/1;
     width: 50px;
     margin: 3px;
@@ -9,6 +10,92 @@
     justify-content: center;
     align-items: center;
 
-    background-color: App.$background-surface-color;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    border: 2px solid App.$background-surface-color;
     border-radius: 2px;
+
+    transition: border-color 0.25s, background-color 0.25s;
+}
+
+// Cell is filled with a letter, but not submitted as a guess
+.filled-cell {
+    color: App.$primary-color;
+    border: 2px solid App.$primary-color;
+    animation: scale-animation 0.2s;
+}
+
+// Cell is next in line to receive keyboard input
+.target-cell {
+    border: 2px solid App.$emphasis-color;
+}
+
+// Letter is in the same position as the solution
+.correct-letter {
+    background-color: App.$correct-letter-color;
+    border-color: App.$correct-letter-color;
+}
+
+// Letter makes up the solution
+.contains-letter {
+    background-color: App.$contains-letter-color;
+    border-color: App.$contains-letter-color;
+}
+
+// Letter does not make up the solution
+.invalid-letter {
+    background-color: App.$invalid-letter-color;
+    border-color: App.$invalid-letter-color;
+}
+
+// Occurs when the cell is revealed via 'Enter' key
+.reveal-cell {
+    animation: reveal-animation 0.6s;
+}
+
+@keyframes scale-animation {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes reveal-animation {
+
+    0%,
+    100% {
+        transform: rotateX(0deg);
+    }
+
+    10%,
+    90% {
+        transform: rotateX(18deg);
+    }
+
+    20%,
+    80% {
+        transform: rotateX(36deg);
+    }
+
+    30%,
+    70% {
+        transform: rotateX(54deg);
+    }
+
+    40%,
+    60% {
+        transform: rotateX(85deg);
+    }
+
+    50% {
+        transform: rotateX(90deg);
+    }
 }

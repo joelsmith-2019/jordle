@@ -1,0 +1,46 @@
+@use '../../App.scss';
+
+// Default row styles
+.game-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// Styles when the word is invalid
+.invalid-row {
+    animation: invalid-row-animation 0.5s;
+
+    .game-cell {
+        border: 2px solid App.$invalid-color;
+    }
+}
+
+@keyframes invalid-row-animation {
+
+    0%,
+    10%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    40% {
+        transform: translateX(-5px);
+    }
+
+    30%,
+    50% {
+        transform: translateX(5px);
+    }
+
+    60%,
+    80% {
+        transform: translateX(-2px);
+    }
+
+    70%,
+    90% {
+        transform: translateX(2px);
+    }
+}

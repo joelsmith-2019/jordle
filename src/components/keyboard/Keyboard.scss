@@ -1,0 +1,35 @@
+@use '../../App.scss';
+
+.keyboard {
+    
+    .keyboard-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        max-width: 100%;
+    }
+    
+    .keyboard-key {
+        flex: 1;
+
+        height: 50px;
+        min-width: 12px;
+        max-width: 35px;
+
+        padding: 0 10px;
+        margin: 3px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-weight: bold;
+        text-transform: uppercase;
+        
+        border: 2px solid App.$background-surface-color;
+        border-radius: 2px;
+        
+        cursor: pointer;
+    }
+}

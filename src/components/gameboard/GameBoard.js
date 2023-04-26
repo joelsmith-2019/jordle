@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Row from "../row/Row";
+import Keyboard from "../keyboard/Keyboard";
 import DictionaryService from "../../services/DictionaryService";
+import "./GameBoard.scss";
 
 // Create the context
 export const GameContext = React.createContext(null);
@@ -21,6 +23,9 @@ const GameBoard = (props) => {
 
     // The current word the user is guessing
     const [currentWord, setCurrentWord] = useState("");
+
+    // The error text to display
+    const [error, setError] = useState();
 
     // Check if the user has won or lost
     useEffect(() => {
@@ -50,27 +55,42 @@ const GameBoard = (props) => {
                 case "Enter":
                     console.log("Keyboard Pressed: Enter");
 
-                    // Check if the word is valid
-                    if (DictionaryService.isValidWord(currentWord)) {
-                        setGuesses([...guesses, currentWord]);
-                        setCurrentWord("");
+                    // Prevent enter from executing if there is an error
+                    if (error) return;
+
+                    // Prevent short words
+                    if (currentWord.length !== solution.length) {
+                        console.log("Too short!");
+                        setError({ type: "SHORT_WORD", message: "The word is too short!" });
                     } else {
-                        console.log("Invalid word!");
+
+                        // Check if the word is valid
+                        DictionaryService.isValidWord(currentWord).then(isValid => {
+                            if (isValid) {
+                                setGuesses([...guesses, currentWord]);
+                                setCurrentWord("");
+                            } else {
+                                console.log("Invalid word!");
+                                setError({ type: "INVALID_WORD", message: "That is not a word, silly goose!" });
+                            }
+                        });
                     }
                     break;
                 case "Backspace":
                     console.log("Keyboard Pressed: Backspace");
                     setCurrentWord(currentWord.slice(0, -1));
+                    setError(null);
                     break;
                 default:
                     // Check if letter is in the alphabet
                     if ("abcdefghijklmnopqrstuvwxyz".includes(event.key.toLowerCase())) {
 
                         // Check if the word is too long
-                        if (currentWord.length < solution.length) {   
+                        if (currentWord.length < solution.length) {
                             console.log("Keyboard Pressed: " + event.key);
                             setCurrentWord(currentWord + event.key);
                         }
+                        setError(null);
                     }
                     break;
             }
@@ -85,7 +105,7 @@ const GameBoard = (props) => {
             // console.log("Removing event listener for key presses");
             document.removeEventListener("keydown", onKeyPress);
         }
-    }, [status, solution, guesses, currentWord]);
+    }, [status, solution, guesses, currentWord, error]);
 
     // Create rows
     function getRows() {
@@ -100,21 +120,35 @@ const GameBoard = (props) => {
 
     // Return the board as JSX
     return (
-        <GameContext.Provider value={{ status, solution, attempts, guesses, currentWord }}>
+        <GameContext.Provider value={{ status, solution, attempts, guesses, currentWord, error }}>
+            <div className="game-board">
 
-            {/* Board header */}
-            <div className="text-center">
-                <h2>Game Board</h2>
-                <p>Status: {status}</p>
-                <p>Solution: {solution}</p>
-                <p>Word Length: {solution.length}</p>
-                <p>Attempts: {attempts}</p>
-            </div>
+                <div className="game-board-top">
+                    {/* Board header */}
+                    <div className="game-stats text-center">
+                        <h2>Game Board</h2>
+                        <p>Status: {status}</p>
+                        <p>Solution: {solution}</p>
+                        <p>Word Length: {solution.length}</p>
+                        <p>Attempts: {attempts}</p>
+                    </div>
 
-            {/* Grid */}
-            <div>
-                {getRows()}
-            </div>
+                    {/* Get rows */}
+                    <div className="game-grid">
+                        {getRows()}
+                    </div>
+
+                    {/* Display error message */}
+                    <div className="game-error">
+                        <span>{error && error.message}</span>
+                    </div>
+                </div>
+
+                {/* Display keyboard */}
+                <div className="game-board-bottom">
+                    <Keyboard />
+                </div>
+            </div >
         </GameContext.Provider>
     );
 }

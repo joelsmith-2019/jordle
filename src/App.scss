@@ -1,9 +1,44 @@
+// Text colors
 $primary-color: lightgray;
-$secondary-color: #654321;
+$emphasis-color: white;
+$correct-color: #538d4e;
+$invalid-color: #b5593b;
+
+// Background colors
 $background-color: #121212;
 $background-surface-color: #212121;
 
+// Letter colors
+$correct-letter-color: $correct-color;
+$contains-letter-color: #b59f3b;
+$invalid-letter-color: $background-surface-color;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+// Default body styles
 body {
+  user-select: none;
+
   background-color: $background-color;
   color: $primary-color;
+
+  overflow-wrap: break-word;
+}
+
+.app-body {
+  min-height: 100vh;
+
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  
+  overflow: hidden;
 }
