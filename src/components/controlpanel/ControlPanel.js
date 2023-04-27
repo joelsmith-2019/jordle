@@ -8,7 +8,7 @@ const ControlPanel = () => {
     const [board, setBoard] = useState(
         <GameBoard
             status="IN_PROGRESS"
-            solution="GRACIOUS"
+            solution="SMITH"
             attempts="6"
         />
     );
@@ -18,7 +18,7 @@ const ControlPanel = () => {
         setBoard(
             <GameBoard
                 status="IN_PROGRESS"
-                solution="GRACIOUS"
+                solution="SMITH"
                 attempts="6"
             />
         );

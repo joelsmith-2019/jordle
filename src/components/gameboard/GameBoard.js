@@ -39,71 +39,73 @@ const GameBoard = (props) => {
 
     }, [solution, attempts, guesses])
 
+    // Function to handle key presses
+    const onKeyPress = (event) => {
+
+        // Ensure the game is in progress
+        if (status !== "IN_PROGRESS") {
+            return;
+        }
+
+        // Switch statement for: Enter, Backspace, Letter
+        switch (event.key) {
+            case "Enter":
+                console.log("Keyboard Pressed: Enter");
+
+                // Prevent enter from executing if there is an error
+                if (error) return;
+
+                // Prevent short words
+                if (currentWord.length !== solution.length) {
+                    console.log("Too short!");
+                    setError({ type: "SHORT_WORD", message: "The word is too short!" });
+                } else {
+
+                    // Check if the word is valid
+                    DictionaryService.isValidWord(currentWord).then(isValid => {
+                        if (isValid) {
+                            setGuesses([...guesses, currentWord]);
+                            setCurrentWord("");
+                        } else {
+                            console.log("Invalid word!");
+                            setError({ type: "INVALID_WORD", message: "That is not a word, silly goose!" });
+                        }
+                    });
+                }
+                break;
+            case "Backspace":
+                console.log("Keyboard Pressed: Backspace");
+                setCurrentWord(currentWord.slice(0, -1));
+                setError(null);
+                break;
+            default:
+                // Check if letter is in the alphabet
+                if ("abcdefghijklmnopqrstuvwxyz".includes(event.key.toLowerCase())) {
+
+                    // Check if the word is too long
+                    if (currentWord.length < solution.length) {
+                        console.log("Keyboard Pressed: " + event.key);
+                        setCurrentWord(currentWord + event.key);
+                    }
+                    setError(null);
+                }
+                break;
+        }
+    }
+
     // Add event listener for key presses
     useEffect(() => {
 
-        // Function to handle key presses
-        const onKeyPress = (event) => {
-
-            // Ensure the game is in progress
-            if (status !== "IN_PROGRESS") {
-                return;
-            }
-
-            // Switch statement for: Enter, Backspace, Letter
-            switch (event.key) {
-                case "Enter":
-                    console.log("Keyboard Pressed: Enter");
-
-                    // Prevent enter from executing if there is an error
-                    if (error) return;
-
-                    // Prevent short words
-                    if (currentWord.length !== solution.length) {
-                        console.log("Too short!");
-                        setError({ type: "SHORT_WORD", message: "The word is too short!" });
-                    } else {
-
-                        // Check if the word is valid
-                        DictionaryService.isValidWord(currentWord).then(isValid => {
-                            if (isValid) {
-                                setGuesses([...guesses, currentWord]);
-                                setCurrentWord("");
-                            } else {
-                                console.log("Invalid word!");
-                                setError({ type: "INVALID_WORD", message: "That is not a word, silly goose!" });
-                            }
-                        });
-                    }
-                    break;
-                case "Backspace":
-                    console.log("Keyboard Pressed: Backspace");
-                    setCurrentWord(currentWord.slice(0, -1));
-                    setError(null);
-                    break;
-                default:
-                    // Check if letter is in the alphabet
-                    if ("abcdefghijklmnopqrstuvwxyz".includes(event.key.toLowerCase())) {
-
-                        // Check if the word is too long
-                        if (currentWord.length < solution.length) {
-                            console.log("Keyboard Pressed: " + event.key);
-                            setCurrentWord(currentWord + event.key);
-                        }
-                        setError(null);
-                    }
-                    break;
-            }
-        }
+        const pressFunc = onKeyPress;
 
         // Add event listener for key presses
         // console.log("Adding event listener for key presses");
-        document.addEventListener("keydown", onKeyPress);
+        document.addEventListener("keydown", pressFunc);
 
         // Remove event listener for key presses
         return () => {
             // console.log("Removing event listener for key presses");
-            document.removeEventListener("keydown", onKeyPress);
+            document.removeEventListener("keydown", pressFunc);
         }
     }, [status, solution, guesses, currentWord, error]);
 
@@ -120,7 +122,7 @@ const GameBoard = (props) => {
 
     // Return the board as JSX
     return (
-        <GameContext.Provider value={{ status, solution, attempts, guesses, currentWord, error }}>
+        <GameContext.Provider value={{ status, solution, attempts, guesses, currentWord, error, onKeyPress }}>
             <div className="game-board">
 
                 <div className="game-board-top">
