@@ -27,7 +27,6 @@ const GameBoard = (props) => {
     // The colors of the letters
     const [letterClasses, setLetterClasses] = useState(new Map());
     function setLetterClass(letter, clss) {
-        console.log('set letter class');
         setLetterClasses(new Map(letterClasses.set(letter.toLowerCase(), clss)));
     }
 

@@ -101,15 +101,27 @@ const Row = ({ rowIndex }) => {
 
                 // Play revealing animation
                 setTimeout(() => {
-                    // console.log(`Revealing cell ${i}`);
+                    // Add reveal animation
                     cell.classList.add('reveal-cell');
 
                     // Apply correctness styles
                     setTimeout(() => {
+                        // Add letter color class to cell
                         cell.classList.add(solutionClasses[i]);
 
+                        // Check if letter is correct and has classes
+                        let isCorrectLetter = solutionClasses[i] === 'correct-letter';
+                        let hasClasses = context.letterClasses.has(letter.toLowerCase());
+
                         // Force apply 'correct-letter', only apply 'contains-letter' or 'invalid-letter' if not already set
-                        if (solutionClasses[i] === 'correct-letter' || !context.letterClasses.has(letter.toLowerCase())) {
+                        if (isCorrectLetter || !hasClasses) {
+
+                            // Prevent animation from playing twice if correct letter is already set
+                            if (isCorrectLetter && hasClasses && context.letterClasses.get(letter.toLowerCase()).includes('correct-letter')) {
+                                return;
+                            }
+
+                            // Apply classes to keys
                             let classes = 'reveal-key ' + solutionClasses[i];
                             context.setLetterClass(letter, classes);
 
