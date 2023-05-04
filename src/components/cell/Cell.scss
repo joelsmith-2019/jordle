@@ -31,24 +31,6 @@
     border: 2px solid App.$emphasis-color;
 }
 
-// Letter is in the same position as the solution
-.correct-letter {
-    background-color: App.$correct-letter-color;
-    border-color: App.$correct-letter-color;
-}
-
-// Letter makes up the solution
-.contains-letter {
-    background-color: App.$contains-letter-color;
-    border-color: App.$contains-letter-color;
-}
-
-// Letter does not make up the solution
-.invalid-letter {
-    background-color: App.$invalid-letter-color;
-    border-color: App.$invalid-letter-color;
-}
-
 // Occurs when the cell is revealed via 'Enter' key
 .reveal-cell {
     animation: reveal-animation 0.6s;

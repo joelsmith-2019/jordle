@@ -1,13 +1,15 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Keyboard.scss';
 import { GameContext } from '../gameboard/GameBoard';
 
 // Keyboard component
 const Keyboard = () => {
 
-    let context = useContext(GameContext);
+    // Game context
+    const context = useContext(GameContext);
 
-    const ref = useRef(null);
+    // State for keys
+    const [keys, setKeys] = useState(null);
 
     // 2D array of rows and letters
     let letters = [
@@ -16,48 +18,59 @@ const Keyboard = () => {
         ["Enter", "z", "x", "c", "v", "b", "n", "m", "Backspace"]
     ];
 
-    // Enter Icon:
-    // <i className="fa-solid fa-arrow-up px-3"></i>
-    // Backspace Icone:
-    // <i className="fa fa-delete-left px-3"></i>
-
-    // Handle key press
-    function onKeyPress(key) {
-        console.log('Pressed key: ' + key);
-        context.onKeyPress(new KeyboardEvent('keydown', { key: key }));
-    }
-
     // Get keys on a row
     const getKeysOnRow = (row) => {
+        // Array of keys
         let keys = [];
 
+        // Loop through letters on row
         for (let i = 0; i < letters[row].length; i++) {
 
+            // Get key
             let key = letters[row][i];
 
-            let icon = key === 'Enter' ? <i className="fa-solid fa-arrow-up px-3"></i> : key === 'Backspace' ? <i className="fa fa-delete-left px-3"></i> : key;
+            // Icon for key
+            let icon = key === 'Enter' ? <i className="fa-solid fa-arrow-up px-3"></i> :
+                key === 'Backspace' ? <i className="fa fa-delete-left px-3"></i> :
+                    key;
 
-            keys.push(<div key={i} id={`key-${key}`}className="keyboard-key" onClick={() => onKeyPress(key)}>{icon}</div>);
+            // Class name for keyboard, will show letter color
+            let classNames = 'keyboard-key ' + context.letterClasses.get(key);
+
+            // Add key to row
+            keys.push(<div key={i} id={`key-${key}`} className={classNames}
+                onClick={
+                    () => {
+                        context.keyFunc(new KeyboardEvent('keydown', { key: key }));
+                    }
+                }>{icon}</div>);
         }
 
+        // Return keys
         return keys;
     }
 
     // Get all keys, grouped by rows
     const getAllKeys = () => {
         let keys = [];
-
         for (let i = 0; i < letters.length; i++) {
             keys.push(<div key={i} className="keyboard-row">{getKeysOnRow(i)}</div>);
         }
-
         return keys;
     }
+
+    // Update keys when letter classes change
+    useEffect(() => {
+        // console.log('**** Keyboard useEffect ****');
+        // console.log(context.letterClasses);
+        // console.log('Rebuilding keyboard...');
+        setKeys(getAllKeys());
+    }, [context.letterClasses, context.keyFunc]);
 
     // Return keyboard
     return (
         <div className="keyboard">
-            {getAllKeys()}
+            {keys}
         </div>
     );
 }

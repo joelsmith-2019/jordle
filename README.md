@@ -1,11 +1,15 @@
 # Jordle
 Joel's Version of Wordle
 
-
-# Todo
-- Target cell is not assigned when app is opened
-- Keyboard does not trigger 'keydown' events (requires testing)
-- Letters should only be marked as similar if they are out of place and there is no same letter in the correct position.
-- Keyboard should reflect correct, similar, or invalid letter colors
+# Features
+- Keyboard unknown keys should be a lighter gray
 - Randomly select words daily
 - Win / Loss effect
+
+# Bugs
+- None
+
+# Solved
+- KEYBOARD NO LONGER WORKS ON CLICK!
+- Solution: TARTS and guess FLINT results in 0/5 correct, even though the last T in flint is similar
+

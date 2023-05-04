@@ -12,6 +12,7 @@ $background-surface-color: #212121;
 $correct-letter-color: $correct-color;
 $contains-letter-color: #b59f3b;
 $invalid-letter-color: $background-surface-color;
+$unknown-letter-color: rgb(69, 69, 69);
 
 * {
   box-sizing: border-box;

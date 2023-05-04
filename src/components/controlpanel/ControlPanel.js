@@ -8,21 +8,10 @@ const ControlPanel = () => {
     const [board, setBoard] = useState(
         <GameBoard
             status="IN_PROGRESS"
-            solution="SMITH"
+            solution="TARTS"
             attempts="6"
         />
     );
-
-    function onRefresh() {
-        console.log('Creating new board...');
-        setBoard(
-            <GameBoard
-                status="IN_PROGRESS"
-                solution="SMITH"
-                attempts="6"
-            />
-        );
-    }
 
     return (
         <div className="control-panel">
@@ -35,10 +24,6 @@ const ControlPanel = () => {
 
             {/* Game Board */}
             {board}
-
-            <div className="text-center">
-                <button className="btn btn-primary" onClick={onRefresh}>Refresh</button>
-            </div>
         </div>
     );
 };

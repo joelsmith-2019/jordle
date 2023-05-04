@@ -27,9 +27,28 @@
         font-weight: bold;
         text-transform: uppercase;
         
-        border: 2px solid App.$background-surface-color;
+        background-color: App.$unknown-letter-color;
         border-radius: 2px;
         
         cursor: pointer;
+    }
+}
+
+// Class that applies the key reveal animation
+.reveal-key {
+    animation: key-animation 0.6s;
+}
+
+@keyframes key-animation {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }

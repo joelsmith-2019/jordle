@@ -41,10 +41,48 @@ const Row = ({ rowIndex }) => {
         // Get the row element
         if (row) {
 
-            // Apply sytles to inner cells
-            for (let i = 0; i < row.children.length; i++) {
+            // Array storing solution classes: correct-letter, contains-letter, invalid-letter
+            let solutionClasses = new Array(context.solution.length).fill("invalid-letter");
 
-                // Get the cell and letter
+            // Create map of solution letters
+            let solutionLetterMap = new Map();
+
+            // First loop for: filling solution map, identifying correct and incorrect letters
+            for (let i = 0; i < context.solution.length; i++) {
+
+                // Get the letter
+                let letter = row.children[i].innerText;
+
+                // Fill solution map
+                let solutionLetter = context.solution[i];
+                if (solutionLetterMap.has(solutionLetter)) {
+                    solutionLetterMap.set(solutionLetter, solutionLetterMap.get(solutionLetter) + 1);
+                } else {
+                    solutionLetterMap.set(solutionLetter, 1);
+                }
+
+                // Check if letter is in solution
+                let isCorrect = context.solution[i] === letter;
+
+                // Apply correctness styles
+                if (isCorrect) {
+                    solutionClasses[i] = 'correct-letter';
+
+                    // Decrement solution map
+                    if (solutionLetterMap.has(letter)) {
+                        solutionLetterMap.set(letter, solutionLetterMap.get(letter) - 1);
+                    } else {
+                        solutionLetterMap.set(letter, -1);
+                    }
+                }
+            }
+
+            console.log(solutionLetterMap);
+
+            // Second loop for: identifying contains letter, playing animation
+            for (let i = 0; i < context.solution.length; i++) {
+
+                // Get the cell & letter
                 let cell = row.children[i];
                 let letter = cell.innerText;
 
@@ -52,20 +90,35 @@ const Row = ({ rowIndex }) => {
                 let isCorrect = context.solution[i] === letter;
                 let isContained = context.solution.includes(letter);
 
-                // Add animation class
+                // Apply correctness styles
+                if (!isCorrect && isContained && solutionLetterMap.get(letter) > 0) {
+                    // Set solution class
+                    solutionClasses[i] = 'contains-letter';
+
+                    // Decrement solution map
+                    solutionLetterMap.set(letter, solutionLetterMap.get(letter) - 1);
+                }
+
+                // Play revealing animation
                 setTimeout(() => {
-                    console.log(`Revealing cell ${i}`);
+                    // console.log(`Revealing cell ${i}`);
                     cell.classList.add('reveal-cell');
 
                     // Apply correctness styles
                     setTimeout(() => {
-                        if (isCorrect) {
-                            cell.classList.add('correct-letter');
-                        } else if (isContained) {
-                            cell.classList.add('contains-letter');
-                        } else {
-                            cell.classList.add('invalid-letter');
+                        cell.classList.add(solutionClasses[i]);
+
+                        // Force apply 'correct-letter', only apply 'contains-letter' or 'invalid-letter' if not already set
+                        if (solutionClasses[i] === 'correct-letter' || !context.letterClasses.has(letter.toLowerCase())) {
+                            let classes = 'reveal-key ' + solutionClasses[i];
+                            context.setLetterClass(letter, classes);
+
+                            // Remove 'reveal-key' class after a delay
+                            setTimeout(() => {
+                                context.setLetterClass(letter, solutionClasses[i]);
+                            }, 650);
                         }
+
                     }, 300);
                 }, i * 350);
             }

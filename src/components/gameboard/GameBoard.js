@@ -24,90 +24,101 @@ const GameBoard = (props) => {
     // The current word the user is guessing
     const [currentWord, setCurrentWord] = useState("");
 
+    // The colors of the letters
+    const [letterClasses, setLetterClasses] = useState(new Map());
+    function setLetterClass(letter, clss) {
+        console.log('set letter class');
+        setLetterClasses(new Map(letterClasses.set(letter.toLowerCase(), clss)));
+    }
+
     // The error text to display
     const [error, setError] = useState();
 
+    // State to handle the key function for the event listener
+    const [keyFunc, setKeyFunc] = useState(() => function(event) { return null; });
+
     // Check if the user has won or lost
     useEffect(() => {
-
         // Check if the user has won
         if (guesses.length > 0 && guesses[guesses.length - 1].toUpperCase() === solution.toUpperCase()) {
             setStatus("WON");
         } else if (guesses.length === attempts) {
             setStatus("LOST");
         }
+    }, [solution, attempts, guesses]);
 
-    }, [solution, attempts, guesses])
+    // Update the key function
+    useEffect(() => {
 
-    // Function to handle key presses
-    const onKeyPress = (event) => {
+        setKeyFunc(() => function (event) {
+            
+            // Skip if event is invalid
+            if (!event || !event.key) return;
 
-        // Ensure the game is in progress
-        if (status !== "IN_PROGRESS") {
-            return;
-        }
+            // Ensure the game is in progress
+            if (status !== "IN_PROGRESS") {
+                return;
+            }
 
-        // Switch statement for: Enter, Backspace, Letter
-        switch (event.key) {
-            case "Enter":
-                console.log("Keyboard Pressed: Enter");
+            // Switch statement for: Enter, Backspace, Letter
+            switch (event.key) {
+                case "Enter":
+                    console.log("Keyboard Pressed: Enter");
 
-                // Prevent enter from executing if there is an error
-                if (error) return;
+                    // Prevent enter from executing if there is an error
+                    if (error) return;
 
-                // Prevent short words
-                if (currentWord.length !== solution.length) {
-                    console.log("Too short!");
-                    setError({ type: "SHORT_WORD", message: "The word is too short!" });
-                } else {
+                    // Prevent short words
+                    if (currentWord.length !== solution.length) {
+                        console.log("Too short!");
+                        setError({ type: "SHORT_WORD", message: "The word is too short!" });
+                    } else {
 
-                    // Check if the word is valid
-                    DictionaryService.isValidWord(currentWord).then(isValid => {
-                        if (isValid) {
-                            setGuesses([...guesses, currentWord]);
-                            setCurrentWord("");
-                        } else {
-                            console.log("Invalid word!");
-                            setError({ type: "INVALID_WORD", message: "That is not a word, silly goose!" });
-                        }
-                    });
-                }
-                break;
-            case "Backspace":
-                console.log("Keyboard Pressed: Backspace");
-                setCurrentWord(currentWord.slice(0, -1));
-                setError(null);
-                break;
-            default:
-                // Check if letter is in the alphabet
-                if ("abcdefghijklmnopqrstuvwxyz".includes(event.key.toLowerCase())) {
-
-                    // Check if the word is too long
-                    if (currentWord.length < solution.length) {
-                        console.log("Keyboard Pressed: " + event.key);
-                        setCurrentWord(currentWord + event.key);
+                        // Check if the word is valid
+                        DictionaryService.isValidWord(currentWord).then(isValid => {
+                            if (isValid) {
+                                setGuesses([...guesses, currentWord]);
+                                setCurrentWord("");
+                            } else {
+                                console.log("Invalid word!");
+                                setError({ type: "INVALID_WORD", message: "That is not a word, silly goose!" });
+                            }
+                        });
                     }
+                    break;
+                case "Backspace":
+                    console.log("Keyboard Pressed: Backspace");
+                    setCurrentWord(currentWord.slice(0, -1));
                     setError(null);
-                }
-                break;
-        }
-    }
+                    break;
+                default:
+                    // Check if letter is in the alphabet
+                    if ("abcdefghijklmnopqrstuvwxyz".includes(event.key.toLowerCase())) {
+
+                        // Check if the word is too long
+                        if (currentWord.length < solution.length) {
+                            console.log("Keyboard Pressed: " + event.key);
+                            setCurrentWord(currentWord + event.key);
+                        }
+                        setError(null);
+                    }
+                    break;
+            }
+        });
+    }, [status, solution, guesses, currentWord, error])
 
     // Add event listener for key presses
     useEffect(() => {
-
-        const pressFunc = onKeyPress;
-
         // Add event listener for key presses
         // console.log("Adding event listener for key presses");
-        document.addEventListener("keydown", pressFunc);
+        document.addEventListener("keydown", keyFunc);
 
         // Remove event listener for key presses
         return () => {
             // console.log("Removing event listener for key presses");
-            document.removeEventListener("keydown", pressFunc);
+            document.removeEventListener("keydown", keyFunc);
         }
-    }, [status, solution, guesses, currentWord, error]);
+    }, [keyFunc]);
 
     // Create rows
     function getRows() {
@@ -122,7 +133,17 @@ const GameBoard = (props) => {
 
     // Return the board as JSX
     return (
-        <GameContext.Provider value={{ status, solution, attempts, guesses, currentWord, error, onKeyPress }}>
+        <GameContext.Provider value={{
+            status,
+            solution,
+            attempts,
+            guesses,
+            currentWord,
+            letterClasses,
+            setLetterClass,
+            error,
+            keyFunc
+        }}>
             <div className="game-board">
 
                 <div className="game-board-top">

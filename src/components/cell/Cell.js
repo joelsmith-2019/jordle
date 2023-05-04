@@ -40,15 +40,25 @@ const Cell = ({ rowIndex, cellIndex }) => {
 
     // Update the cell's class when the target cell changes
     useEffect(() => {
+        // Check if this cell is the target cell
+        let isTargetCell = isTarget && context.status === "IN_PROGRESS";
+
+        // Handle non-null cells
         if (cell) {
             // Update target status
-            if (isTarget && context.status === "IN_PROGRESS") {
-                cell.classList.add('target-cell');
+            if (isTargetCell) {
+                document.getElementById(cellId).classList.add('target-cell')
             } else {
-                cell.classList.remove('target-cell');
+                document.getElementById(cellId).classList.remove('target-cell');
             }
+        } else if (isTargetCell) {
+            // Add target class after a delay if the cell is null (actively being created)
+            setTimeout(() => {
+                let el = document.getElementById(cellId);
+                if (el) el.classList.add('target-cell');
+            }, 1000);
         }
-    }, [cell, isTarget, context.status, context.guesses, context.currentWord])
+    }, [cell, cellId, isTarget, context.status, context.guesses, context.currentWord])
 
     // Return JSX for Cell
     return (
