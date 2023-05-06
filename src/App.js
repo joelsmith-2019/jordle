@@ -8,6 +8,7 @@ function App() {
 
       <div className="text-center my-3">
         <h1>Welcome to Jordle!</h1>
+        <p>Guess the word before you run out of attempts.</p>
       </div>
 
       <ControlPanel />

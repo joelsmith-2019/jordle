@@ -13,7 +13,7 @@ const GameBoard = (props) => {
     const [status, setStatus] = useState(props.status);
 
     // The solution to the game.
-    const [solution, setSolution] = useState(props.solution);
+    const [solution, setSolution] = useState(props.solution.toUpperCase());
 
     // The number of attempts the user has to guess the solution.
     const [attempts, setAttempts] = useState(Math.max(1, props.attempts));
@@ -34,7 +34,7 @@ const GameBoard = (props) => {
     const [error, setError] = useState();
 
     // State to handle the key function for the event listener
-    const [keyFunc, setKeyFunc] = useState(() => function(event) { return null; });
+    const [keyFunc, setKeyFunc] = useState(() => function (event) { return null; });
 
     // Check if the user has won or lost
     useEffect(() => {
@@ -50,7 +50,7 @@ const GameBoard = (props) => {
     useEffect(() => {
 
         setKeyFunc(() => function (event) {
-            
+
             // Skip if event is invalid
             if (!event || !event.key) return;
 
@@ -96,8 +96,8 @@ const GameBoard = (props) => {
 
                         // Check if the word is too long
                         if (currentWord.length < solution.length) {
-                            console.log("Keyboard Pressed: " + event.key);
-                            setCurrentWord(currentWord + event.key);
+                            console.log("Keyboard Pressed: " + event.key.toUpperCase());
+                            setCurrentWord(currentWord + event.key.toUpperCase());
                         }
                         setError(null);
                     }
@@ -108,13 +108,12 @@ const GameBoard = (props) => {
 
     // Add event listener for key presses
     useEffect(() => {
-        // Add event listener for key presses
         // console.log("Adding event listener for key presses");
         document.addEventListener("keydown", keyFunc);
 
         // Remove event listener for key presses
         return () => {
-            // console.log("Removing event listener for key presses");
+            console.log("Removing event listener for key presses");
             document.removeEventListener("keydown", keyFunc);
         }
     }, [keyFunc]);
@@ -143,14 +142,14 @@ const GameBoard = (props) => {
             error,
             keyFunc
         }}>
-            <div className="game-board">
+            <div id={props.id} className="game-board">
 
                 <div className="game-board-top">
                     {/* Board header */}
                     <div className="game-stats text-center">
                         <h2>Game Board</h2>
                         <p>Status: {status}</p>
-                        <p>Solution: {solution}</p>
+                        {/* <p>Solution: {solution}</p> */}
                         <p>Word Length: {solution.length}</p>
                         <p>Attempts: {attempts}</p>
                     </div>
@@ -164,6 +163,17 @@ const GameBoard = (props) => {
                     <div className="game-error">
                         <span>{error && error.message}</span>
                     </div>
+
+                    {/* Button for resetting game */}
+                    {(status === "WON" || status === "LOST") &&
+                        <div className="text-center">
+                            <p>Game Over!</p>
+                            {status === "LOST" &&
+                                <p>The word was: {solution}</p>
+                            }
+                            <button className="btn btn-primary" onClick={props.resetGame}>Play Again</button>
+                        </div>
+                    }
                 </div>
 
                 {/* Display keyboard */}

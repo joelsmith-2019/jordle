@@ -15,7 +15,7 @@ const httpClient = axios.create({
 const DictionaryService = {
 
     // Check if a word exists in the dictionary
-    isValidWord: (word) => {
+    isValidWord: async (word) => {
 
         // Convert word to lowercase
         word = word.toLowerCase();
