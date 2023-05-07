@@ -4,6 +4,7 @@ import ControlPanel from './components/controlpanel/ControlPanel';
 import NavBar from './components/navbar/NavBar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/home/Home';
+import ErrorPage from './components/errorpage/ErrorPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path='' element={<Home />} />
               <Route path='/classic' element={<ControlPanel isClassic={true} />} />
               <Route path='/custom' element={<ControlPanel />} />
+              <Route path='*' element={<ErrorPage />} />
             </Routes>
           </div>
 
