@@ -1,16 +1,22 @@
 # Jordle
 Joel's Version of Wordle
 
-# Features
+## Deployment Status
+![CI/CD](https://github.com/joelsmith-2019/jordle/workflows/Node.js%20CI/badge.svg)
+
+# Work In Progress
+This application is still a work in progress.
+
+## Features
 - Play with Friends Version (Features a 'Share' Button)
 - Add Jordle favicon and logo
 - Add how-to play popup
 - Add about popup
 
-# Bugs
+## Bugs
 - None
 
-# Solved
+## Solved
 - Ensure random word chosen is in the dictionary!
 - Error Page (404): take them back to home page (show a silly goose)
 - Win / Loss effect
