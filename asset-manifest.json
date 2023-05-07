@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/jordle/static/css/main.9a06bd9f.css",
+    "main.js": "/jordle/static/js/main.0cb83614.js",
+    "index.html": "/jordle/index.html",
+    "main.9a06bd9f.css.map": "/jordle/static/css/main.9a06bd9f.css.map",
+    "main.0cb83614.js.map": "/jordle/static/js/main.0cb83614.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9a06bd9f.css",
+    "static/js/main.0cb83614.js"
+  ]
+}
