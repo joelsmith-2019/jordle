@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WordGeneratorService from "../../services/WordGeneratorService";
 import "./ControlPanel.scss";
+import DictionaryService from "../../services/DictionaryService";
 
 const ControlPanel = (props) => {
 
@@ -68,18 +69,33 @@ const ControlPanel = (props) => {
         WordGeneratorService.generateWord(input.wordLength)
             .then((word) => {
 
-                // Set the board
-                setBoard(
-                    <GameBoard
-                        status="IN_PROGRESS"
-                        solution={word}
-                        attempts={input.maxAttempts}
-                        resetGame={resetGame}
-                    />
-                );
+                DictionaryService.isValidWord(word)
+                    .then(isValid => {
 
-                // Set loading to false
-                setIsLoading(false);
+                        if (isValid) {
+
+                            // Set the board
+                            setBoard(
+                                <GameBoard
+                                    status="IN_PROGRESS"
+                                    solution={word}
+                                    attempts={input.maxAttempts}
+                                    resetGame={resetGame}
+                                />
+                            );
+
+                            // Set loading to false
+                            setIsLoading(false);
+
+                        } else {
+                            // Try to start the game again
+                            startGame();
+                        }
+                    })
+                    .catch(err => {
+                        // Error occured with dictionary, try to start again
+                        startGame();
+                    });
             })
             .catch((err) => {
                 console.log(err);
