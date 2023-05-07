@@ -137,6 +137,33 @@ const Row = ({ rowIndex }) => {
         }
     }, [row, rowIndex, context.solution, context.guesses.length]);
 
+    // Update row styles when status changes to WON or LOST
+    useEffect(() => {
+
+        if (row && rowIndex === context.guesses.length - 1) {
+
+            if (context.status === "WON") {
+                setTimeout(() => {
+                    // Add styles to row
+                    row.classList.add('won-row');
+
+                    for (let i = 0; i < row.children.length; i++) {
+                        setTimeout(() => {
+                            row.children[i].classList.add('winning-cell');
+                        }, i * 150);
+                    }
+
+                }, row.children.length * 350);
+            }
+            else if (context.status === "LOST") {
+                setTimeout(() => {
+                    row.classList.add('invalid-row');
+                }, row.children.length * 350 + 900);
+            }
+        }
+
+    }, [row, rowIndex, context.status]);
+
     // Get cells associated with the row
     function getCells() {
         let cells = [];

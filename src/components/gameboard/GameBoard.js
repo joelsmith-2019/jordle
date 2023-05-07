@@ -12,6 +12,9 @@ const GameBoard = (props) => {
     // The status of the board (IN_PROGRESS, WON, LOST)
     const [status, setStatus] = useState(props.status);
 
+    // The results of the game
+    const [results, setResults] = useState(null);
+
     // The solution to the game.
     const [solution, setSolution] = useState(props.solution.toUpperCase());
 
@@ -41,8 +44,14 @@ const GameBoard = (props) => {
         // Check if the user has won
         if (guesses.length > 0 && guesses[guesses.length - 1].toUpperCase() === solution.toUpperCase()) {
             setStatus("WON");
+            setTimeout(() => {
+                setResults({ status: "WON", solution: solution, guesses: guesses.length });
+            }, solution.length * 350 + 1000);
         } else if (guesses.length === attempts) {
             setStatus("LOST");
+            setTimeout(() => {
+                setResults({ status: "LOST", solution: solution, guesses: guesses.length });
+            }, solution.length * 350 + 1000);
         }
     }, [solution, attempts, guesses]);
 
@@ -165,13 +174,44 @@ const GameBoard = (props) => {
                     </div>
 
                     {/* Button for resetting game */}
-                    {(status === "WON" || status === "LOST") &&
+                    {results &&
                         <div className="text-center">
-                            <p>Game Over!</p>
-                            {status === "LOST" &&
-                                <p>The word was: {solution}</p>
+
+                            {/* Win message */}
+                            {results.status === "WON" &&
+                                <div>
+                                    <p>You won with {results.guesses} guess{results.guesses > 1 && <span>es</span>}! <br/>
+                                        {results.guesses === 1 &&
+                                            <span>Wow, you might just be a genius...</span>
+                                        }
+                                        {results.guesses === 2 &&
+                                            <span>That was impresive!</span>
+                                        }
+                                        {results.guesses === 3 &&
+                                            <span>That was quite splendid!</span>
+                                        }
+                                        {(results.guesses === 4 || results.guesses === 5) &&
+                                            <span>Nice work!</span>
+                                        }
+                                        {(results.guesses > 4 && results.guesses === attempts) &&
+                                            <span>That was close!</span>
+                                        }
+                                    </p>
+                                </div>
                             }
-                            <button className="btn btn-primary" onClick={props.resetGame}>Play Again</button>
+
+                            {/* Lose message */}
+                            {results.status === "LOST" &&
+                                <div>
+                                    <p>
+                                        You lost!<br />
+                                        The word was: <strong>{results.solution}</strong>
+                                    </p>
+                                </div>
+                            }
+
+                            {/* Play again button */}
+                            <button className="jordle-button" onClick={props.resetGame}>Play Again</button>
                         </div>
                     }
                 </div>

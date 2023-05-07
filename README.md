@@ -2,15 +2,15 @@
 Joel's Version of Wordle
 
 # Features
-- Win / Loss effect
-- Win / Loss description with generic stats
-- Play with Friends Version (Features a 'Share' Button)
 - Error Page (404): take them back to home page (show a silly goose)
+- Play with Friends Version (Features a 'Share' Button)
 
 # Bugs
 - Ensure random word chosen is in the dictionary!
 
 # Solved
+- Win / Loss effect
+- Win / Loss description with generic stats
 - Play loading effect when start game is selected
 - Back button to return to home from control panel
 - Control panel decides game settings

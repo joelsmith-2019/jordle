@@ -52,6 +52,12 @@
     animation: reveal-animation 0.6s;
 }
 
+// Occurs when the cell is a part of the winning word
+.winning-cell {
+    position: relative;
+    animation: win-animation 0.5s;
+}
+
 @keyframes scale-animation {
     0% {
         transform: scale(1);
@@ -95,5 +101,16 @@
 
     50% {
         transform: rotateX(90deg);
+    }
+}
+
+@keyframes win-animation {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-30px);
     }
 }
