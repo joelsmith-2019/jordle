@@ -1,12 +1,14 @@
 // Text colors
 $primary-color: lightgray;
 $emphasis-color: white;
+$low-emphasis-color: rgb(150, 150, 150);
 $correct-color: #538d4e;
 $invalid-color: #b5593b;
 
 // Background colors
 $background-color: #121212;
 $background-surface-color: #212121;
+$background-overlay-color: rgba($background-color, 0.2);
 
 // Letter colors
 $correct-letter-color: $correct-color;
@@ -37,9 +39,48 @@ body {
 .app-body {
   min-height: 100vh;
 
-  height: inherit;
   display: flex;
   flex-direction: column;
-  
+}
+
+.app-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
   overflow: hidden;
+}
+
+// Styling for text-based buttons
+.jordle-button {
+  background-color: $background-surface-color;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $background-surface-color;
+  }
+}
+
+// Styling for icons (Back arrows, etc.)
+.jordle-icon {
+  background: none;
+  border: none;
+  border-radius: 5px;
+  color: $emphasis-color;
+  padding: 5px 8px;
+  margin: 3px 0px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $background-surface-color;
+  }
 }

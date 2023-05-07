@@ -1,0 +1,37 @@
+@use '../../App.scss';
+
+.navbar {
+    background-color: App.$background-surface-color;
+    border-bottom: 2px solid App.$primary-color;
+    width: 100%;
+    padding: 0;
+}
+
+.navbar-toggler {
+    border: none;
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.navbar-toggler-icon {
+    filter: invert(100%) brightness(1000%);
+}
+
+.nav-logo {
+    margin: 0;
+    padding: 5px;
+    font-size: 24px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    &:hover {
+        color: App.$emphasis-color;
+        background-color: rgba(App.$background-color, 0.5);
+    }
+}

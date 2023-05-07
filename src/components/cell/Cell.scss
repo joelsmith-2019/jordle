@@ -2,14 +2,17 @@
 
 // Default game cell styles
 .game-cell {
+
     aspect-ratio: 1/1;
     width: 50px;
+    min-height: 20px;
     margin: 3px;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
+    font-size: 100%;
     font-weight: bold;
     text-transform: uppercase;
 
@@ -17,6 +20,19 @@
     border-radius: 2px;
 
     transition: border-color 0.25s, background-color 0.25s;
+}
+
+// Adjust cell sizes on mobile devices
+@media (max-width: 576px) {
+    .game-cell {
+        margin: 2px;
+    }
+}
+
+@media (max-width: 440px) {
+    .game-cell {
+        margin: 1.5px;
+    }
 }
 
 // Cell is filled with a letter, but not submitted as a guess

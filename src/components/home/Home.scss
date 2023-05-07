@@ -1,0 +1,21 @@
+@use '../../App.scss';
+
+.game-type {
+
+    height: 100%;
+
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+
+    border: 2px solid App.$background-surface-color;
+    background-color: App.$background-surface-color;
+
+    transition: all 0.2s;
+
+    cursor: pointer;
+
+    &:hover {
+        border: 2px solid App.$primary-color;
+    }
+}

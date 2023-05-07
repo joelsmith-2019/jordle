@@ -62,7 +62,7 @@ const GameBoard = (props) => {
             // Switch statement for: Enter, Backspace, Letter
             switch (event.key) {
                 case "Enter":
-                    console.log("Keyboard Pressed: Enter");
+                    // console.log("Keyboard Pressed: Enter");
 
                     // Prevent enter from executing if there is an error
                     if (error) return;
@@ -86,7 +86,7 @@ const GameBoard = (props) => {
                     }
                     break;
                 case "Backspace":
-                    console.log("Keyboard Pressed: Backspace");
+                    // console.log("Keyboard Pressed: Backspace");
                     setCurrentWord(currentWord.slice(0, -1));
                     setError(null);
                     break;
@@ -96,7 +96,7 @@ const GameBoard = (props) => {
 
                         // Check if the word is too long
                         if (currentWord.length < solution.length) {
-                            console.log("Keyboard Pressed: " + event.key.toUpperCase());
+                            // console.log("Keyboard Pressed: " + event.key.toUpperCase());
                             setCurrentWord(currentWord + event.key.toUpperCase());
                         }
                         setError(null);
@@ -113,7 +113,7 @@ const GameBoard = (props) => {
 
         // Remove event listener for key presses
         return () => {
-            console.log("Removing event listener for key presses");
+            // console.log("Removing event listener for key presses");
             document.removeEventListener("keydown", keyFunc);
         }
     }, [keyFunc]);
@@ -147,11 +147,11 @@ const GameBoard = (props) => {
                 <div className="game-board-top">
                     {/* Board header */}
                     <div className="game-stats text-center">
-                        <h2>Game Board</h2>
+                        {/* <h2>Game Board</h2>
                         <p>Status: {status}</p>
-                        {/* <p>Solution: {solution}</p> */}
+                        <p>Solution: {solution}</p>
                         <p>Word Length: {solution.length}</p>
-                        <p>Attempts: {attempts}</p>
+                        <p>Attempts: {attempts}</p> */}
                     </div>
 
                     {/* Get rows */}

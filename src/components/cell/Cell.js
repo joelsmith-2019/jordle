@@ -35,7 +35,6 @@ const Cell = ({ rowIndex, cellIndex }) => {
                 cell.classList.remove('filled-cell');
             }
         }
-
     }, [cell, isActiveRow, context.currentWord])
 
     // Update the cell's class when the target cell changes
