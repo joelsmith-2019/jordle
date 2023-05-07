@@ -3,6 +3,9 @@ Joel's Version of Wordle
 
 # Features
 - Play with Friends Version (Features a 'Share' Button)
+- Add Jordle favicon and logo
+- Add how-to play popup
+- Add about popup
 
 # Bugs
 - None
