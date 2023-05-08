@@ -30,7 +30,7 @@ const Keyboard = () => {
             let key = letters[row][i];
 
             // Icon for key
-            let icon = key === 'Enter' ? <i className="fa-solid fa-arrow-up px-3"></i> :
+            let icon = key === 'Enter' ? <i className="fa-solid fa-upload px-3"></i> :
                 key === 'Backspace' ? <i className="fa fa-delete-left px-3"></i> :
                     key;
 

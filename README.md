@@ -8,15 +8,19 @@ Joel's Version of Wordle
 This application is still a work in progress.
 
 ## Features
-- Play with Friends Version (Features a 'Share' Button)
-- Add Jordle favicon and logo
 - Add how-to play popup
 - Add about popup
+- Play with Friends Version (Features a 'Share' Button)
+- Utilize new dictionary service with standard English words
+- Utilize new random word generator with standard English words
+- Add hint capability
 
 ## Bugs
 - None
 
 ## Solved
+- Add Jordle favicon and logo
+- Make the starting keyboard key color a lighter gray
 - Ensure random word chosen is in the dictionary!
 - Error Page (404): take them back to home page (show a silly goose)
 - Win / Loss effect
