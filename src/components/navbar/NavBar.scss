@@ -35,3 +35,18 @@
         background-color: rgba(App.$background-color, 0.5);
     }
 }
+
+.author {
+
+    // Link styles
+    a {
+        text-decoration: none;
+        color: App.$low-emphasis-color;
+        transition: color 0.3s;
+
+        // Hover on link
+        &:hover {
+            color: App.$emphasis-color;
+        }
+    }
+}

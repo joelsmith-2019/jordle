@@ -25,21 +25,3 @@
     text-align: center;
     font-size: 20px;
 }
-
-// Letter is in the same position as the solution
-.correct-letter {
-    background-color: App.$correct-letter-color !important;
-    border-color: App.$correct-letter-color !important;
-}
-
-// Letter makes up the solution
-.contains-letter {
-    background-color: App.$contains-letter-color !important;
-    border-color: App.$contains-letter-color !important;
-}
-
-// Letter does not make up the solution
-.invalid-letter {
-    background-color: App.$invalid-letter-color !important;
-    border-color: App.$invalid-letter-color !important;
-}

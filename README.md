@@ -1,5 +1,6 @@
 # Jordle
-Joel's Version of Wordle
+Joel's Version of Wordle.  
+Check it out live at https://joelsmith-2019.github.io/jordle/.
 
 ## Deployment Status
 ![CI/CD](https://github.com/joelsmith-2019/jordle/workflows/Node.js%20CI/badge.svg)
@@ -8,8 +9,6 @@ Joel's Version of Wordle
 This application is still a work in progress.
 
 ## Features
-- Add how-to play popup
-- Add about popup
 - Play with Friends Version (Features a 'Share' Button)
 - Utilize new dictionary service with standard English words
 - Utilize new random word generator with standard English words
@@ -19,6 +18,8 @@ This application is still a work in progress.
 - None
 
 ## Solved
+- Add how-to play popup
+- Add author link
 - Add Jordle favicon and logo
 - Make the starting keyboard key color a lighter gray
 - Ensure random word chosen is in the dictionary!

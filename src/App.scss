@@ -8,6 +8,7 @@ $invalid-color: #b5593b;
 // Background colors
 $background-color: #121212;
 $background-surface-color: #212121;
+$background-modal-color: $background-color;
 $background-overlay-color: rgba($background-color, 0.2);
 
 // Letter colors
@@ -83,4 +84,27 @@ body {
     background-color: $primary-color;
     color: $background-surface-color;
   }
+}
+
+// Override bootstrap modal styles
+.modal-content {
+  background-color: $background-modal-color;
+}
+
+// Letter is in the same position as the solution
+.correct-letter {
+  background-color: $correct-letter-color !important;
+  border-color: $correct-letter-color !important;
+}
+
+// Letter makes up the solution
+.contains-letter {
+  background-color: $contains-letter-color !important;
+  border-color: $contains-letter-color !important;
+}
+
+// Letter does not make up the solution
+.invalid-letter {
+  background-color: $invalid-letter-color !important;
+  border-color: $invalid-letter-color !important;
 }
