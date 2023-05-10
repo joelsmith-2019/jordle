@@ -2,6 +2,7 @@ import GameBoard from "../gameboard/GameBoard";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WordGeneratorService from "../../services/WordGeneratorService";
+import WordGeneratorShortService from "../../services/WorldGeneratorShortService";
 import "./ControlPanel.scss";
 import DictionaryService from "../../services/DictionaryService";
 
@@ -66,7 +67,9 @@ const ControlPanel = (props) => {
         // Set board to loading
         setIsLoading(true);
 
-        WordGeneratorService.generateWord(input.wordLength)
+        let len = input.wordLength;
+
+        (len <= 9 ? WordGeneratorShortService : WordGeneratorService).generateWord(len)
             .then((word) => {
 
                 DictionaryService.isValidWord(word)
