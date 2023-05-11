@@ -112,21 +112,21 @@ function NavBar() {
                 <div className="container-sm">
 
                     {/* Logo */}
-                    <div className="mx-auto">
+                    <div className="">
                         <span className="nav-logo" onClick={() => navigate('')}>Jordle</span>
                     </div>
 
                     {/* Info Modal */}
                     <button className="jordle-icon" data-bs-toggle="modal" data-bs-target="#modal"
                         onClick={() => setModal(modalContent.info)}>
-                        <i class="fa-sharp fa-solid fa-question fa-fw"></i>
+                        <i className="fa-sharp fa-solid fa-question fa-fw"></i>
                     </button>
                 </div>
 
             </nav>
 
             {/* Modal Popup */}
-            <div className="modal fade" id="modal" tabindex="-1">
+            <div className="modal fade" id="modal" tabIndex="-1">
                 <div className="modal-dialog">
                     <div className="modal-content">
 

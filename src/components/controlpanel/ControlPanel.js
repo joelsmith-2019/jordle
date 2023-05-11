@@ -2,14 +2,18 @@ import GameBoard from "../gameboard/GameBoard";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WordGeneratorService from "../../services/WordGeneratorService";
-import WordGeneratorShortService from "../../services/WorldGeneratorShortService";
+import ShortWordGeneratorService from "../../services/ShortWordGeneratorService";
 import "./ControlPanel.scss";
 import DictionaryService from "../../services/DictionaryService";
+import DailyWordService from "../../services/DailyWordService";
 
 const ControlPanel = (props) => {
 
     // Navigation hook
     let navigate = useNavigate();
+
+    // The game type
+    const gameType = props.gameType;
 
     // The game board
     const [board, setBoard] = useState(null);
@@ -22,15 +26,12 @@ const ControlPanel = (props) => {
         }
     );
 
-    // Loading state (Default to true if classic game)
-    const [isLoading, setIsLoading] = useState(props.isClassic);
+    // Loading state (Default to true if classic game type)
+    const [isLoading, setIsLoading] = useState(gameType === "classic" ? true : false);
 
-    // Set the board if classic game
+    // Start the game if it is a daily jordle or classic unlimited
     useEffect(() => {
-        console.log(props.isClassic);
-        console.log(input);
-
-        if (props.isClassic) {
+        if (["daily", "classic"].includes(gameType)) {
             startGame();
         }
     }, []);
@@ -67,9 +68,44 @@ const ControlPanel = (props) => {
         // Set board to loading
         setIsLoading(true);
 
-        let len = input.wordLength;
+        switch (gameType) {
+            case "daily":
+                startDailyGame();
+                break;
+            case "classic":
+            case "custom":
+                startGameFromInput();
+                break;
+            case "byo":
+                break;
+        }
+    }
 
-        (len <= 9 ? WordGeneratorShortService : WordGeneratorService).generateWord(len)
+    // Start the daily game.
+    async function startDailyGame() {
+
+        // Get the daily word
+        let sol = await DailyWordService.getDailyWord();
+
+        // Set the board
+        setBoard(
+            <GameBoard
+                status="IN_PROGRESS"
+                solution={sol}
+                attempts={6}
+                resetGame={resetGame}
+            />
+        );
+
+        // Set loading to false
+        setIsLoading(false);
+    }
+
+    // Start the game from the input (Input defaults to a classic game)
+    // This method works for both classic and custom games.
+    function startGameFromInput() {
+        let len = input.wordLength;
+        (len <= 9 ? ShortWordGeneratorService : WordGeneratorService).generateWord(len)
             .then((word) => {
 
                 DictionaryService.isValidWord(word)
@@ -110,8 +146,11 @@ const ControlPanel = (props) => {
         // Set board to null
         setBoard(null);
 
+        // Return to home page if daily
+        if (gameType === "daily") navigate('/');
+
         // Start classic game again
-        if (props.isClassic) startGame();
+        if (gameType === "classic") startGame();
     }
 
     // Return control panel JSX

@@ -12,7 +12,7 @@ const httpClient = axios.create({
 });
 
 // This service generates a random word.
-const WordGeneratorShortService = {
+const ShortWordGeneratorService = {
 
     // Generate a word of length
     generateWord: async (length) => {
@@ -24,11 +24,15 @@ const WordGeneratorShortService = {
         // Make API GET request, and return the word
         try {
             const res = await httpClient
-                .get("", { params: 
-                    { 
-                        words: 1,
-                        length: length 
-                    } });
+                .get("",
+                    {
+                        params:
+                        {
+                            words: 1,
+                            length: length
+                        }
+                    }
+                );
             console.log(res.data);
             return res.data[0];
         } catch (err) {
@@ -39,4 +43,4 @@ const WordGeneratorShortService = {
 };
 
 // Export WordGeneratorService
-export default WordGeneratorShortService;
+export default ShortWordGeneratorService;

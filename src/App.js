@@ -21,8 +21,10 @@ function App() {
           <div className="app-content container mt-1">
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/classic' element={<ControlPanel isClassic={true} />} />
-              <Route path='/custom' element={<ControlPanel />} />
+              <Route path='/daily' element={<ControlPanel gameType="daily" />} />
+              <Route path='/classic' element={<ControlPanel gameType="classic" isClassic={true} />} />
+              <Route path='/custom' element={<ControlPanel gameType="custom"/>} />
+              <Route path='/byo' element={<ControlPanel gameType="byo" />} />
               <Route path='*' element={<ErrorPage />} />
             </Routes>
           </div>
