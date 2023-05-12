@@ -203,22 +203,25 @@ const ControlPanel = (props) => {
         // Get the url
         let url = window.location.href + "/" + encodedWord;
 
-        if ('clipboard' in navigator) {
-            await navigator.clipboard.writeText(url);
+        if (!isMobile) {
+
+            if ('clipboard' in navigator) {
+                await navigator.clipboard.writeText(url);
+            } else {
+                document.execCommand('copy', true, url);
+            }
+
+            // Set is copied to true
+            setIsCopied(true);
+
+            // From is copied popup after 5s
+            setTimeout(() => {
+                setIsCopied(false);
+            }, 5000);
+
         } else {
-            document.execCommand('copy', true, url);
-        }
 
-        // Set is copied to true
-        setIsCopied(true);
-
-        // From is copied popup after 5s
-        setTimeout(() => {
-            setIsCopied(false);
-        }, 5000);
-
-        // If on mobile, open up sms
-        if (isMobile) {
+            // Open up sms on mobile
             window.open("sms:?&body=Try to beat this Jordle: " + url);
         }
     }
@@ -378,7 +381,7 @@ const ControlPanel = (props) => {
 
                                     {/* Submit button */}
                                     <div className="my-3">
-                                        <button type="submit" onClick={handleSubmit} className="jordle-button">
+                                        <button disabled={isCopied} type="submit" onClick={handleSubmit} className="jordle-button">
                                             {gameType === "byo" ? "Share Game" : "Start Game"}
                                         </button>
                                     </div>
