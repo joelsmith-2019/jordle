@@ -3,7 +3,7 @@ $primary-color: lightgray;
 $emphasis-color: white;
 $low-emphasis-color: rgb(150, 150, 150);
 $correct-color: #538d4e;
-$invalid-color: #b5593b;
+$invalid-color: #f37950;
 
 // Background colors
 $background-color: #121212;
@@ -57,7 +57,7 @@ body {
 .jordle-button {
   background-color: $background-surface-color;
   color: $primary-color;
-  border: 1px solid $primary-color;
+  border: 2px solid $primary-color;
   border-radius: 5px;
   padding: 5px 10px;
   margin: 5px;

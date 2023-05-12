@@ -43,10 +43,9 @@ function Home() {
 
                 {/* Build Your Own */}
                 <div className="col-10 col-sm-5 my-3">
-                    <div className="game-type" onClick={() => navigate('/custom')} style={{backgroundColor: 'black' }}>
-                        <h3>Build Your Own (WIP)</h3>
+                    <div className="game-type" onClick={() => navigate('/byo')}>
+                        <h3>Build Your Own</h3>
                         <p>Build your own game by choosing the word and the number of attempts. Then, challenge friends to solve your very own Jordle! </p>
-                        <b>This will route you to Custom games until fully functional.</b>
                     </div>
                 </div>
             </div>

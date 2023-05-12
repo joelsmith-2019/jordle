@@ -25,6 +25,7 @@ function App() {
               <Route path='/classic' element={<ControlPanel gameType="classic" isClassic={true} />} />
               <Route path='/custom' element={<ControlPanel gameType="custom"/>} />
               <Route path='/byo' element={<ControlPanel gameType="byo" />} />
+              <Route path='/byo/:settings' element={<ControlPanel gameType="byo" />} />
               <Route path='*' element={<ErrorPage />} />
             </Routes>
           </div>
