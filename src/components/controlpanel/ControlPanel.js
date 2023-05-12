@@ -8,6 +8,7 @@ import DictionaryService from "../../services/DictionaryService";
 import DailyWordService from "../../services/DailyWordService";
 import { Buffer } from "buffer";
 import { useParams } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 const ControlPanel = (props) => {
 
@@ -28,7 +29,7 @@ const ControlPanel = (props) => {
 
         // If settings are provided, parse them, otherwise use defaults
         if (byoSettings) {
-            
+
             // Decode the settings
             let paramInput = Buffer.from(byoSettings, 'base64').toString('ascii');
 
@@ -51,6 +52,9 @@ const ControlPanel = (props) => {
 
     // Loading state (Default to true if classic game type)
     const [isLoading, setIsLoading] = useState(gameType === "classic" ? true : false);
+
+    // Is copied state
+    const [isCopied, setIsCopied] = useState(false);
 
     // Start the game if it is a daily, classic, or shared byo game
     useEffect(() => {
@@ -87,37 +91,35 @@ const ControlPanel = (props) => {
         // If byo, check if the word is valid
         if (gameType === "byo") {
 
-            // Validate the input
-            let isValid = true;
-
             // Ensure the word length is within bounds
             if (input.customWord.length < 3 || input.customWord.length > 15) {
-                isValid = false;
                 setInputError("Please enter a word between 3 and 15 letters.");
+                return;
             }
 
             // Ensure only alphabet (ensure no whitespace)
             for (let i = 0; i < input.customWord.length; i++) {
                 if (!"ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(input.customWord[i].toUpperCase())) {
-                    isValid = false;
                     setInputError("Please enter a valid word only containing letters A-Z.");
-                    break;
+                    return;
                 }
             }
 
-            // Ensure the word is in the dictionary
             if (!(await DictionaryService.isValidWord(input.customWord).then(isValid => isValid).catch(err => false))) {
-                isValid = false;
+                // Ensure the word is in the dictionary
                 setInputError("Please enter a word found in our dictionary.");
+                return;
             }
 
-            if (isValid) {
-                setInputError("");
-                shareGame();
-            }
+            // Share the game
+            setInputError("");
+            shareGame();
+
         } else {
+            // Start game
             startGame();
         }
+
     }
 
     // Reset the settings
@@ -177,8 +179,6 @@ const ControlPanel = (props) => {
         // Get the word for the game
         let word = gameType === "byo" ? input.customWord : await getGeneratedWord(input.wordLength);
 
-        console.log('Word at start game: ', word);
-
         // Set the board
         setBoard(
             <GameBoard
@@ -195,7 +195,7 @@ const ControlPanel = (props) => {
 
     // Share the game, copy a link to the clipboard,
     // or open a share popup on mobile
-    function shareGame() {
+    async function shareGame() {
 
         // base64 encode custom word
         let encodedWord = Buffer.from(JSON.stringify(input)).toString('base64');
@@ -203,12 +203,24 @@ const ControlPanel = (props) => {
         // Get the url
         let url = window.location.href + "/" + encodedWord;
 
-        // Copy the url to the clipboard
-        navigator.clipboard.writeText(url)
-            .then(() => {
-                // Alert the user
-                alert("Link copied to clipboard! Share it with your friends!");
-            });
+        if ('clipboard' in navigator) {
+            await navigator.clipboard.writeText(url);
+        } else {
+            document.execCommand('copy', true, url);
+        }
+
+        // Set is copied to true
+        setIsCopied(true);
+
+        // From is copied popup after 5s
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 5000);
+
+        // If on mobile, open up sms
+        if (isMobile) {
+            window.open("sms:?&body=Try to beat this Jordle: " + url);
+        }
     }
 
     // Get a generated word
@@ -370,6 +382,13 @@ const ControlPanel = (props) => {
                                             {gameType === "byo" ? "Share Game" : "Start Game"}
                                         </button>
                                     </div>
+
+                                    {/* Display copied text */}
+                                    {isCopied &&
+                                        <div>
+                                            <span className="copied-word">Link copied to clipboard!</span>
+                                        </div>
+                                    }
                                 </form>
                             </div>
                         </div>

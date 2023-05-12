@@ -33,7 +33,7 @@ const ShortWordGeneratorService = {
                         }
                     }
                 );
-            console.log(res.data);
+            // console.log(res.data);
             return res.data[0];
         } catch (err) {
             console.log(err);

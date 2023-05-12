@@ -77,7 +77,8 @@ const Row = ({ rowIndex }) => {
                 }
             }
 
-            console.log(solutionLetterMap);
+            // Log solution map
+            // console.log(solutionLetterMap);
 
             // Second loop for: identifying contains letter, playing animation
             for (let i = 0; i < context.solution.length; i++) {

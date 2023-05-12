@@ -29,7 +29,7 @@ const DictionaryService = {
         return httpClient
             .get("", { params: { sp: word, max: 1 } })
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 return res.data.length === 1 && res.data[0].word === word;
             }).catch((err) => {
                 console.log(err);

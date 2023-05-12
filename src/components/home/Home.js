@@ -21,7 +21,7 @@ function Home() {
                 <div className="col-10 col-sm-5 my-3">
                     <div className="game-type" onClick={() => navigate('/daily')}>
                         <h3>Daily Jordle</h3>
-                        <p>Guess a 5-letter word in 6 attempts. New word every day at midnight.</p>
+                        <p>Guess a 5-letter word within 6 attempts. New word every day at midnight.</p>
                     </div>
                 </div>
 
@@ -29,7 +29,7 @@ function Home() {
                 <div className="col-10 col-sm-5 my-3">
                     <div className="game-type" onClick={() => navigate('/classic')}>
                         <h3>Classic Unlimited</h3>
-                        <p>Guess an unlimited supply of the classic, 5-letter words in 6 attempts.</p>
+                        <p>Guess an unlimited supply of the classic, 5-letter words within 6 attempts.</p>
                     </div>
                 </div>
 

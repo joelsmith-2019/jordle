@@ -20,7 +20,7 @@ const WordGeneratorService = {
         try {
             const res = await httpClient
                 .get("", { params: { length: length } });
-            console.log(res.data);
+            // console.log(res.data);
             return res.data[0];
         } catch (err) {
             console.log(err);

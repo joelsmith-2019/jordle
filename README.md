@@ -9,15 +9,14 @@ Check it out live at https://joelsmith-2019.github.io/jordle/.
 This application is still a work in progress.
 
 ## Features
-- Play with Friends Version (Features a 'Share' Button)
-- Utilize new dictionary service with standard English words
-- Utilize new random word generator with standard English words
 - Add hint capability
 
 ## Bugs
 - None
 
 ## Solved
+- Play with Friends Version (Features a 'Share' Button)
+- Utilize new random word generator with standard English words
 - Add how-to play popup
 - Add author link
 - Add Jordle favicon and logo

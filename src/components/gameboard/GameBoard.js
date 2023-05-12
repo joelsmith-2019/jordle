@@ -78,7 +78,7 @@ const GameBoard = (props) => {
 
                     // Prevent short words
                     if (currentWord.length !== solution.length) {
-                        console.log("Too short!");
+                        // console.log("Too short!");
                         setError({ type: "SHORT_WORD", message: "The word is too short!" });
                     } else {
 
@@ -88,7 +88,7 @@ const GameBoard = (props) => {
                                 setGuesses([...guesses, currentWord]);
                                 setCurrentWord("");
                             } else {
-                                console.log("Invalid word!");
+                                // console.log("Invalid word!");
                                 setError({ type: "INVALID_WORD", message: "That is not a word, silly goose!" });
                             }
                         });

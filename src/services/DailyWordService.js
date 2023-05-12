@@ -586,8 +586,8 @@ const DailyWordService = {
         let word = words.length > 0 ? words[daysSince % words.length] : "cutie";
 
         // Log the word
-        console.log("Days since", daysSince);
-        console.log(word);
+        // console.log("Days since", daysSince);
+        // console.log(word);
 
         // Return the word
         return word;
