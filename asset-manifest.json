@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/jordle/static/css/main.bb1e7268.css",
-    "main.js": "/jordle/static/js/main.b87130fc.js",
+    "main.js": "/jordle/static/js/main.fcae27f5.js",
     "index.html": "/jordle/index.html",
     "main.bb1e7268.css.map": "/jordle/static/css/main.bb1e7268.css.map",
-    "main.b87130fc.js.map": "/jordle/static/js/main.b87130fc.js.map"
+    "main.fcae27f5.js.map": "/jordle/static/js/main.fcae27f5.js.map"
   },
   "entrypoints": [
     "static/css/main.bb1e7268.css",
-    "static/js/main.b87130fc.js"
+    "static/js/main.fcae27f5.js"
   ]
 }
