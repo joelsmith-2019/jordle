@@ -81,7 +81,6 @@ const ControlPanel = (props) => {
                     [event.target.name]: event.target.value
                 });
         }
-
     }
 
     // Reset the settings
@@ -245,8 +244,8 @@ const ControlPanel = (props) => {
         // Share the url
         if (navigator.share) {
             await navigator.share({
-                title: "Jordle",
-                text: "Try to beat this Jordle: ",
+                title: "Jordle | Word Game",
+                text: "Can you beat my Jordle?",
                 url: url,
             });
         }
@@ -408,6 +407,7 @@ const ControlPanel = (props) => {
                                     {/* Submit button */}
                                     <div className="my-3">
 
+                                        {/* Start game button */}
                                         {gameType !== "byo" &&
                                             <button type="submit" className="jordle-button" onClick={handleSubmitOnStartGame} >
                                                 <i className="fa fa-play fa-fw me-2"></i>
@@ -415,13 +415,13 @@ const ControlPanel = (props) => {
                                             </button>
                                         }
 
+                                        {/* BYO Controls */}
                                         {gameType === "byo" &&
                                             <>
-                                                {/* Display copy link | share button */}
                                                 <div className="row justify-content-between align-items-center">
 
+                                                    {/* Display Share button */}
                                                     <div className="col">
-
                                                         <button type="submit" className="jordle-button" onClick={shareUrl}>
                                                             <i className="fa fa-arrow-up-from-bracket fa-fw me-2"></i>
                                                             Share

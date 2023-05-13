@@ -9,6 +9,7 @@ Check it out live at https://joelsmith-2019.github.io/jordle/.
 This application is still a work in progress.
 
 ## Features
+- Save progress in storage
 - Add hint capability
 
 ## Bugs
