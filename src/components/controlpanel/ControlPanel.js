@@ -64,7 +64,7 @@ const ControlPanel = (props) => {
     }, []);
 
     // Handle input change
-    function onChange(event) {
+    async function onChange(event) {
         if (event.target.name === "customWord") {
             // Set custom word in all caps and update word length
             setInput(
@@ -81,44 +81,6 @@ const ControlPanel = (props) => {
                     [event.target.name]: event.target.value
                 });
         }
-    }
-
-    // Handle form submission
-    async function handleSubmit(event) {
-        // Prevent default button handling
-        event.preventDefault();
-
-        // If byo, check if the word is valid
-        if (gameType === "byo") {
-
-            // Ensure the word length is within bounds
-            if (input.customWord.length < 3 || input.customWord.length > 15) {
-                setInputError("Please enter a word between 3 and 15 letters.");
-                return;
-            }
-
-            // Ensure only alphabet (ensure no whitespace)
-            for (let i = 0; i < input.customWord.length; i++) {
-                if (!"ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(input.customWord[i].toUpperCase())) {
-                    setInputError("Please enter a valid word only containing letters A-Z.");
-                    return;
-                }
-            }
-
-            if (!(await DictionaryService.isValidWord(input.customWord).then(isValid => isValid).catch(err => false))) {
-                // Ensure the word is in the dictionary
-                setInputError("Please enter a word found in our dictionary.");
-                return;
-            }
-
-            // Share the game
-            setInputError("");
-            shareGame();
-
-        } else {
-            // Start game
-            startGame();
-        }
 
     }
 
@@ -132,6 +94,50 @@ const ControlPanel = (props) => {
                 maxAttempts: 6
             }
         );
+    }
+
+    // Check if a form is valid
+    async function isValidBYOForm() {
+
+        // Set error to empty
+        let error = "";
+
+        // Ensure the word length is within bounds
+        if (input.customWord.length < 3 || input.customWord.length > 15) {
+            error = "Please enter a word between 3 and 15 letters.";
+        }
+
+        // Ensure only alphabet (ensure no whitespace)
+        if (!error) {
+            for (let i = 0; i < input.customWord.length; i++) {
+                if (!"ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(input.customWord[i].toUpperCase())) {
+                    error = "Please enter a valid word only containing letters A-Z.";
+                }
+            }
+        }
+
+        // Ensure the word is in the dictionary
+        if (!error && !(await DictionaryService.isValidWord(input.customWord).then(isValid => isValid).catch(err => false))) {
+            error = "Please enter a word found in our dictionary.";
+        }
+
+        // Return if valid
+        if (error) {
+            setInputError(error);
+            return false;
+        } else {
+            setInputError("");
+            return true;
+        }
+    }
+
+    // Handle form submission
+    async function handleSubmitOnStartGame(event) {
+        // Prevent default button handling
+        event.preventDefault();
+
+        // Start game
+        startGame();
     }
 
     // Start the game
@@ -193,36 +199,56 @@ const ControlPanel = (props) => {
         setIsLoading(false);
     }
 
-    // Share the game, copy a link to the clipboard,
-    // or open a share popup on mobile
-    async function shareGame() {
+    // Get the url for the shared game
+    function getUrl() {
+        return window.location.href + "/" + Buffer.from(JSON.stringify(input)).toString('base64');
+    }
 
-        // base64 encode custom word
-        let encodedWord = Buffer.from(JSON.stringify(input)).toString('base64');
+    // Copy the url to the clipboard
+    async function copyUrl(event) {
+        // Prevent default button handling
+        event.preventDefault();
 
-        // Get the url
-        let url = window.location.href + "/" + encodedWord;
+        // Ensure the form is valid
+        if (await isValidBYOForm() === false) return;
 
-        if (!isMobile) {
+        // Copy the url to the clipboard
+        let url = getUrl();
 
-            if ('clipboard' in navigator) {
-                await navigator.clipboard.writeText(url);
-            } else {
-                document.execCommand('copy', true, url);
-            }
-
-            // Set is copied to true
-            setIsCopied(true);
-
-            // From is copied popup after 5s
-            setTimeout(() => {
-                setIsCopied(false);
-            }, 5000);
-
+        if ('clipboard' in navigator) {
+            await navigator.clipboard.writeText(url);
         } else {
+            document.execCommand('copy', true, url);
+        }
 
-            // Open up sms on mobile
-            window.open("sms:?&body=Try to beat this Jordle: " + url);
+        // Set is copied to true
+        setIsCopied(true);
+
+        // From is copied popup after 5s
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 5000);
+    }
+
+    // Share the url
+    async function shareUrl(event) {
+
+        // Prevent default button handling
+        event.preventDefault();
+
+        // Ensure the form is valid
+        if (await isValidBYOForm() === false) return;
+
+        // Copy the url to the clipboard
+        let url = getUrl();
+
+        // Share the url
+        if (navigator.share) {
+            await navigator.share({
+                title: "Jordle",
+                text: "Try to beat this Jordle: ",
+                url: url,
+            });
         }
     }
 
@@ -252,10 +278,10 @@ const ControlPanel = (props) => {
 
     // Reset the game board
     function resetGame() {
-        // Set board to null
+        // Set board to null (will show form again if a custom game)
         setBoard(null);
 
-        // Return to home page if daily
+        // Return to home page if daily or byo
         if (["daily", "byo"].includes(gameType)) navigate('/');
 
         // Start classic game again
@@ -381,27 +407,60 @@ const ControlPanel = (props) => {
 
                                     {/* Submit button */}
                                     <div className="my-3">
-                                        <button disabled={isCopied} type="submit" onClick={handleSubmit} className="jordle-button">
-                                            {gameType === "byo" ? "Share Game" : "Start Game"}
-                                        </button>
+
+                                        {gameType !== "byo" &&
+                                            <button type="submit" className="jordle-button" onClick={handleSubmitOnStartGame} >
+                                                <i className="fa fa-play fa-fw me-2"></i>
+                                                Start Game
+                                            </button>
+                                        }
+
+                                        {gameType === "byo" &&
+                                            <>
+                                                {/* Display copy link | share button */}
+                                                <div className="row justify-content-between align-items-center">
+
+                                                    <div className="col">
+
+                                                        <button type="submit" className="jordle-button" onClick={shareUrl}>
+                                                            <i className="fa fa-arrow-up-from-bracket fa-fw me-2"></i>
+                                                            Share
+                                                        </button>
+                                                    </div>
+
+                                                    {/* Display copy link if not mobile */}
+                                                    {!isMobile &&
+                                                        <div className="col text-end">
+                                                            <button disabled={isCopied} type="submit" onClick={copyUrl} className="jordle-button">
+                                                                <i className="fa fa-copy fa-fw me-2"></i>
+                                                                Copy Link
+                                                            </button>
+                                                        </div>
+                                                    }
+
+                                                </div>
+
+                                                {/* Display copied text */}
+                                                {isCopied &&
+                                                    <div className="text-end mt-2">
+                                                        <span className="copied-word">Link copied to clipboard!</span>
+                                                    </div>
+                                                }
+                                            </>
+                                        }
+
                                     </div>
 
-                                    {/* Display copied text */}
-                                    {isCopied &&
-                                        <div>
-                                            <span className="copied-word">Link copied to clipboard!</span>
-                                        </div>
-                                    }
                                 </form>
                             </div>
                         </div>
                     }
-                </div>
+                </div >
             }
 
             {/* Game Board */}
             {board}
-        </div>
+        </div >
     );
 };
 
