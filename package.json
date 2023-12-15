@@ -1,7 +1,7 @@
 {
-  "name": "wordle",
-  "version": "0.1.0",
-  "homepage": "https://joelsmith-2019.github.io/jordle",
+  "name": "jordle",
+  "version": "1.0.0",
+  "homepage": "https://jordle.joelsmith.io",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
